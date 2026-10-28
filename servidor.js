@@ -21,15 +21,19 @@ let exercicios = [
 //Endpoint GET para colecao.
 app.get('/api/exercicios', (req, res) => {
     //Extraindo valor de grupo.
-    const grupo = req.query.grupo;
+    const { grupo, ordem } = req.query;
+    let resultado = [...exercicios]; //Copia do array original.
 
     //Percorrendo a colecao.
     if (grupo) {
-        const filtrados = exercicios.filter(e => e.grupo === grupo);
-        res.status(200).json(filtrados);
-    } else {
-        res.json(exercicios);
+        resultado = resultado.filter(e => e.grupo === grupo);
     }
+
+    if (ordem === 'carga') {
+        resultado.sort((a, b) => b.carga - a.carga);
+    }
+
+    res.status(200).json(resultado);
 });
 
 //Endpoint GET com Router Parameter.
@@ -51,13 +55,32 @@ app.get('/api/exercicios/:id', (req, res) => {
     res.json(exercicio);
 });
 
+app.delete('/api/exercicios/:id', (req, res) => {
+    const id = Number(req.params.id);
+
+    if (isNaN(id)) {
+        return res.status(404).json({ erro: "O recurso pedido nao existe."})
+    }
+
+    const index = exercicios.findIndex(e => e.id === id);
+
+    if (index === -1) {
+        return res.status(404).json({ erro: "Exercicio nao encontrado no sistema."});
+    }
+
+    //Remove o exercicio do array.
+    exercicios.splice(index, 1);
+
+    res.status(204).end();
+});
+
 app.post('/api/exercicios', (req, res) => {
     const { nome, grupo, carga} = req.body;
 
     //Verificacao do nome.
     if (!nome || typeof nome !== 'string' || nome.trim().length < 3) {
         return res.status(400).json({
-            erro: "O nome do ecxercicio e obrigatorio e deve ter pelo menos 3 caracteres."
+            erro: "O nome do exercicio e obrigatorio e deve ter pelo menos 3 caracteres."
         });
     }
 
