@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>FitCatalog</title>
+    <!-- Estilo externo (requisito 1) -->
+    <link rel="stylesheet" href="estilo.css">
+    <!-- O defer espera a página carregar antes de rodar o app.js -->
+    <script src="app.js" defer></script>
+</head>
+<body>
+
+    <!-- Cabeçalho -->
+    <header class="cabecalho">
+        <div class="container">
+            <h1>FitCatalog</h1>
+            <p>Catálogo de exercícios de musculação</p>
+        </div>
+    </header>
+
+    <!-- Conteúdo principal -->
+    <main class="container">
+
+        <!-- Lista e filtro: o app.js preenche #listaExercicios com os cards -->
+        <section class="secao">
+            <h2>Exercícios cadastrados</h2>
+
+            <div class="filtros">
+                <label for="filtroGrupo">Filtrar por grupo:</label>
+                <!-- Ao mudar o valor, o app.js busca de novo com ?grupo= -->
+                <select id="filtroGrupo">
+                    <option value="">Todos os grupos</option>
+                    <option value="Peito">Peito</option>
+                    <option value="Pernas">Pernas</option>
+                    <option value="Costas">Costas</option>
+                    <option value="Braços">Braços</option>
+                </select>
+            </div>
+
+            <!-- Avisos da lista (ex.: nenhum exercício encontrado) -->
+            <p id="mensagemLista"></p>
+            <div id="listaExercicios" class="lista-exercicios"></div>
+        </section>
+
+        <!-- Cadastro: o app.js envia estes campos ao servidor com POST -->
+        <section class="secao">
+            <h2>Cadastrar exercício</h2>
+
+            <!-- novalidate: o navegador não valida, quem valida é o servidor -->
+            <form id="formExercicio" novalidate>
+                <div class="campo">
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome">
+                </div>
+
+                <div class="campo">
+                    <label for="grupo">Grupo:</label>
+                    <select id="grupo">
+                        <option value="">Selecione</option>
+                        <option value="Peito">Peito</option>
+                        <option value="Pernas">Pernas</option>
+                        <option value="Costas">Costas</option>
+                        <option value="Braços">Braços</option>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label for="carga">Carga (kg):</label>
+                    <input type="number" id="carga">
+                </div>
+
+                <button type="submit">Cadastrar</button>
+            </form>
+
+            <!-- Aqui aparece o erro (400) ou o sucesso (201) do cadastro -->
+            <p id="mensagemCadastro"></p>
+        </section>
+
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="rodape">
+        <p>FitCatalog — Programação Web I</p>
+    </footer>
+
+</body>
+</html>
